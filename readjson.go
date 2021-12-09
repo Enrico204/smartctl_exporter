@@ -129,6 +129,9 @@ func resultCodeIsOk(SMARTCtlResult int64) bool {
 			logger.Warning("The device self-test log contains records of errors. [ATA only] Failed self-tests outdated by a newer successful extended self-test are ignored.")
 		}
 	}
+	if options.SMARTctl.IgnoreErrors {
+		return true
+	}
 	return result
 }
 

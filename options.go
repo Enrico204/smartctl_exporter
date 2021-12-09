@@ -23,6 +23,7 @@ type SMARTOptions struct {
 	CollectPeriod         string `yaml:"collect_not_more_than_period"`
 	CollectPeriodDuration time.Duration
 	Devices               []string `yaml:"devices"`
+	IgnoreErrors          bool     `yaml:"ignore_errors`
 }
 
 // Options is a representation of a options
@@ -36,6 +37,7 @@ func loadOptions() Options {
 	verbose := flag.Bool("verbose", false, "Verbose log output")
 	debug := flag.Bool("debug", false, "Debug log output")
 	version := flag.Bool("version", false, "Show application version and exit")
+	ignoreErrors := flag.Bool("ignore-errors", false, "Ignore errors while reading SMART values")
 	flag.Parse()
 
 	if *version {
@@ -72,6 +74,10 @@ func loadOptions() Options {
 	}
 
 	opts.SMARTctl.CollectPeriodDuration = d
+
+	if *ignoreErrors {
+		opts.SMARTctl.IgnoreErrors = true
+	}
 
 	logger.Debug("Parsed options: %s", opts)
 	return opts
